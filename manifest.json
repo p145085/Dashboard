@@ -4,6 +4,14 @@
   "version": "1.0.0",
   "description": "Monitor and switch to browser tabs with notifications",
   "permissions": ["tabs"],
+  "commands": {
+    "_execute_sidebar_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+D"
+      },
+      "description": "Toggle Notification Dashboard"
+    }
+  },
   "sidebar_action": {
     "default_title": "Notification Dashboard",
     "default_panel": "sidebar.html"

@@ -86,7 +86,23 @@ async function refresh() {
     }
   }
 
-  render(notifications)
+  // Deduplicate by domain: collapse multiple tabs from the same site into one
+  // entry, keeping the one with the highest notification count.
+  const byDomain = new Map()
+  for (const n of notifications) {
+    try {
+      const hostname = new URL(n.url).hostname
+      const existing = byDomain.get(hostname)
+      if (!existing || n.count > existing.count) {
+        byDomain.set(hostname, n)
+      }
+    } catch {
+      // malformed URL, keep as-is under its own key
+      byDomain.set(n.url, n)
+    }
+  }
+
+  render(Array.from(byDomain.values()))
 }
 
 function render(notifications) {
