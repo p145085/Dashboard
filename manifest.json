@@ -24,14 +24,14 @@
     "scripts": ["background.js"],
     "persistent": false
   },
-  "data_collection_permissions": {
-    "required": [],
-    "optional": []
-  },
   "browser_specific_settings": {
     "gecko": {
       "id": "notification-dashboard@p145085",
-      "strict_min_version": "57.0"
+      "strict_min_version": "79.0",
+      "data_collection_permissions": {
+        "required": [],
+        "optional": []
+      }
     }
   }
 }

@@ -92,14 +92,6 @@ function parseNotificationCount(title) {
   return null
 }
 
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-}
-
 async function refresh() {
   const tabs = await browser.tabs.query({})
   const notifications = []
@@ -148,46 +140,80 @@ function render(notifications) {
 
   countEl.textContent = `${notifications.length} notification${notifications.length !== 1 ? 's' : ''}`
 
+  while (container.firstChild) container.removeChild(container.firstChild)
+
   if (notifications.length === 0) {
-    container.innerHTML = `
-      <div class="empty">
-        <div class="empty-icon">&#10003;</div>
-        <p>No tab notifications</p>
-      </div>
-    `
+    const empty = document.createElement('div')
+    empty.className = 'empty'
+    const icon = document.createElement('div')
+    icon.className = 'empty-icon'
+    icon.textContent = '✓'
+    const text = document.createElement('p')
+    text.textContent = 'No tab notifications'
+    empty.appendChild(icon)
+    empty.appendChild(text)
+    container.appendChild(empty)
     return
   }
 
-  container.innerHTML = notifications
-    .map(
-      (n) => `
-      <div class="card" data-tab-id="${n.tabId}" data-window-id="${n.windowId}">
-        <div class="card-icon">
-          ${n.favIconUrl
-            ? `<img src="${escapeHtml(n.favIconUrl)}" alt="" class="favicon" onerror="this.style.display='none'">`
-            : '<div class="favicon-placeholder"></div>'}
-        </div>
-        <div class="card-content">
-          <div class="card-meta">
-            <span class="site-name">${escapeHtml(n.site)}</span>
-            ${n.count > 0 ? `<span class="badge">${n.count}</span>` : ''}
-          </div>
-          <div class="card-title">${escapeHtml(n.title)}</div>
-          <div class="card-url">${escapeHtml(n.url)}</div>
-        </div>
-      </div>
-    `
-    )
-    .join('')
+  for (const n of notifications) {
+    const card = document.createElement('div')
+    card.className = 'card'
 
-  container.querySelectorAll('.card').forEach((card) => {
+    const iconDiv = document.createElement('div')
+    iconDiv.className = 'card-icon'
+    if (n.favIconUrl) {
+      const img = document.createElement('img')
+      img.src = n.favIconUrl
+      img.alt = ''
+      img.className = 'favicon'
+      img.addEventListener('error', () => { img.style.display = 'none' })
+      iconDiv.appendChild(img)
+    } else {
+      const placeholder = document.createElement('div')
+      placeholder.className = 'favicon-placeholder'
+      iconDiv.appendChild(placeholder)
+    }
+
+    const content = document.createElement('div')
+    content.className = 'card-content'
+
+    const meta = document.createElement('div')
+    meta.className = 'card-meta'
+
+    const siteName = document.createElement('span')
+    siteName.className = 'site-name'
+    siteName.textContent = n.site
+    meta.appendChild(siteName)
+
+    if (n.count > 0) {
+      const badge = document.createElement('span')
+      badge.className = 'badge'
+      badge.textContent = n.count
+      meta.appendChild(badge)
+    }
+
+    const title = document.createElement('div')
+    title.className = 'card-title'
+    title.textContent = n.title
+
+    const url = document.createElement('div')
+    url.className = 'card-url'
+    url.textContent = n.url
+
+    content.appendChild(meta)
+    content.appendChild(title)
+    content.appendChild(url)
+    card.appendChild(iconDiv)
+    card.appendChild(content)
+
     card.addEventListener('click', () => {
-      const tabId = parseInt(card.dataset.tabId)
-      const windowId = parseInt(card.dataset.windowId)
-      browser.tabs.update(tabId, { active: true })
-      browser.windows.update(windowId, { focused: true })
+      browser.tabs.update(n.tabId, { active: true })
+      browser.windows.update(n.windowId, { focused: true })
     })
-  })
+
+    container.appendChild(card)
+  }
 }
 
 refresh()
