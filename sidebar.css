@@ -9,13 +9,14 @@ body {
   background: #0f172a;
   color: #e2e8f0;
   font-size: 13px;
-  min-width: 260px;
 }
 
 #app {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 header {
