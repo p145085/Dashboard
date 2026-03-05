@@ -7,7 +7,7 @@
   "commands": {
     "open-dashboard": {
       "suggested_key": {
-        "default": "Ctrl+Shift+D"
+        "default": "Alt+Shift+D"
       },
       "description": "Open Notification Dashboard"
     }
