@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "name": "Notification Dashboard",
+  "version": "1.0.0",
+  "description": "Monitor and switch to browser tabs with notifications",
+  "permissions": ["tabs"],
+  "sidebar_action": {
+    "default_title": "Notification Dashboard",
+    "default_panel": "sidebar.html"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "notification-dashboard@p145085",
+      "strict_min_version": "57.0"
+    }
+  }
+}
