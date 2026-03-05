@@ -1,6 +1,8 @@
 const SITE_NAMES = {
   'mail.google.com': 'Gmail',
   'inbox.google.com': 'Gmail',
+  'www.google.com': 'Google',
+  'google.com': 'Google',
   'www.facebook.com': 'Facebook',
   'facebook.com': 'Facebook',
   'www.messenger.com': 'Messenger',
@@ -9,6 +11,7 @@ const SITE_NAMES = {
   'www.reddit.com': 'Reddit',
   'reddit.com': 'Reddit',
   'github.com': 'GitHub',
+  'www.github.com': 'GitHub',
   'www.youtube.com': 'YouTube',
   'outlook.live.com': 'Outlook',
   'outlook.office.com': 'Outlook',
@@ -17,18 +20,49 @@ const SITE_NAMES = {
   'app.slack.com': 'Slack',
   'discord.com': 'Discord',
   'www.instagram.com': 'Instagram',
+  'instagram.com': 'Instagram',
   'www.linkedin.com': 'LinkedIn',
+  'linkedin.com': 'LinkedIn',
   'teams.microsoft.com': 'Teams',
   'www.twitch.tv': 'Twitch',
   'www.pinterest.com': 'Pinterest',
   'www.tiktok.com': 'TikTok',
   'traderie.com': 'Traderie',
   'www.traderie.com': 'Traderie',
+  'acurast.com': 'Acurast',
+  'www.acurast.com': 'Acurast',
+  'avanza.se': 'Avanza',
+  'www.avanza.se': 'Avanza',
+  'kraken.com': 'Kraken',
+  'www.kraken.com': 'Kraken',
+  'paypal.com': 'PayPal',
+  'www.paypal.com': 'PayPal',
+  'stackoverflow.com': 'Stack Overflow',
+  'www.stackoverflow.com': 'Stack Overflow',
+  'loopia.se': 'Loopia',
+  'www.loopia.se': 'Loopia',
+  'bokio.se': 'Bokio',
+  'www.bokio.se': 'Bokio',
+  'kalmar.se': 'Kalmar',
+  'www.kalmar.se': 'Kalmar',
+  'linktr.ee': 'Linktree',
+  'www.linktr.ee': 'Linktree',
+  'klarna.se': 'Klarna',
+  'www.klarna.se': 'Klarna',
+  'klarna.com': 'Klarna',
+  'www.klarna.com': 'Klarna',
+  'alienaa.com': 'Alienaa',
+  'www.alienaa.com': 'Alienaa',
+  'privateemail.com': 'Private Email',
+  'www.privateemail.com': 'Private Email',
 }
+
+const PRIVATE_IP = /^(localhost|127\.\d+\.\d+\.\d+|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+)$/
 
 function getSiteName(url) {
   try {
     const hostname = new URL(url).hostname
+    if (PRIVATE_IP.test(hostname)) return 'Local Network'
     return SITE_NAMES[hostname] || hostname.replace(/^www\./, '')
   } catch {
     return url
