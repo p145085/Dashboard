@@ -22,6 +22,8 @@ const SITE_NAMES = {
   'www.twitch.tv': 'Twitch',
   'www.pinterest.com': 'Pinterest',
   'www.tiktok.com': 'TikTok',
+  'traderie.com': 'Traderie',
+  'www.traderie.com': 'Traderie',
 }
 
 function getSiteName(url) {
@@ -71,6 +73,7 @@ async function refresh() {
   for (const tab of tabs) {
     if (!tab.title || !tab.url) continue
     if (tab.url.startsWith('about:') || tab.url.startsWith('moz-extension:')) continue
+    if (tab.discarded) continue
 
     const parsed = parseNotificationCount(tab.title)
     if (parsed) {
